@@ -10,7 +10,9 @@ import camp.nextstep.edu.missionutils.Console;
 public class Application {
     public static void main(String[] args) {
         String str = readInput();
+
         List<Integer> v = parseNumbers(str);
+
         int ans = getSum(v);
 
         printAns(ans);
@@ -22,19 +24,23 @@ public class Application {
     }
 
     public static List<Integer> parseNumbers(String str) {
-        String customDelimiter = "[,:]";
-        int st = 0;
-
         try {
-            if (str.startsWith("//")) {
-                customDelimiter = Pattern.quote(String.valueOf(str.charAt(2)));
+            String customDelimiter = "[,:]";
 
-                st = str.indexOf("\\n");
-                if (st != 3)
+            int st = 0;
+            if (str.startsWith("//")) {
+                if (str.indexOf("\\n") != 3)
                     throw new IllegalArgumentException();
+
+                customDelimiter = Pattern.quote(String.valueOf(str.charAt(2)));
+                st = 5;
             }
 
-            return Arrays.stream(str.substring(st + 2).split(customDelimiter))
+            if (str.length() == 0 || (st == 5 && str.length() == 5))
+                return List.of(0);
+
+            return Arrays.stream(str.substring(st)
+                    .split(customDelimiter))
                     .map(Integer::parseInt)
                     .peek(k -> {
                         if (k < 1)
@@ -48,7 +54,6 @@ public class Application {
 
     public static int getSum(List<Integer> v) {
         int ret = 0;
-
         for (int k : v)
             ret += k;
 
