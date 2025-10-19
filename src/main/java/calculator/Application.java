@@ -8,19 +8,29 @@ import java.util.stream.Collectors;
 import camp.nextstep.edu.missionutils.Console;
 
 public class Application {
-
     public static List<Integer> parseNumbers(String str) {
         String customDelimiter = "[,:]";
-        if (str.startsWith("//")) {
-            customDelimiter = Pattern.quote(String.valueOf(str.charAt(2)));
+        int st = 0;
 
-            int st = str.indexOf("\\n");
-            str = str.substring(st + 2);
+        try {
+            if (str.startsWith("//")) {
+                customDelimiter = Pattern.quote(String.valueOf(str.charAt(2)));
+
+                st = str.indexOf("\\n");
+                if (st != 3)
+                    throw new IllegalArgumentException();
+            }
+
+            return Arrays.stream(str.substring(st + 2).split(customDelimiter))
+                    .map(Integer::parseInt)
+                    .peek(k -> {
+                        if (k < 1)
+                            throw new IllegalArgumentException();
+                    })
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            throw new IllegalArgumentException();
         }
-
-        return Arrays.stream(str.split(customDelimiter))
-                .map(Integer::parseInt)
-                .collect(Collectors.toList());
     }
 
     public static String readInput() {
@@ -31,7 +41,7 @@ public class Application {
     public static void printAns(int ans) {
         System.out.printf("결과 : %s", ans);
     }
-    
+
     public static void main(String[] args) {
         String str = readInput();
         List<Integer> v = parseNumbers(str);
