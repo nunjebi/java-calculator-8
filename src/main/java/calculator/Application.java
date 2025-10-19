@@ -8,13 +8,17 @@ import java.util.stream.Collectors;
 import camp.nextstep.edu.missionutils.Console;
 
 public class Application {
-    public static int getSum(List<Integer> v) {
-        int ret = 0;
+    public static void main(String[] args) {
+        String str = readInput();
+        List<Integer> v = parseNumbers(str);
+        int ans = getSum(v);
 
-        for (int k : v)
-            ret += k;
+        printAns(ans);
+    }
 
-        return ret;
+    public static String readInput() {
+        System.out.println("덧셈할 문자열을 입력해 주세요.");
+        return Console.readLine();
     }
 
     public static List<Integer> parseNumbers(String str) {
@@ -42,20 +46,16 @@ public class Application {
         }
     }
 
+    public static int getSum(List<Integer> v) {
+        int ret = 0;
+
+        for (int k : v)
+            ret += k;
+
+        return ret;
+    }
+
     public static void printAns(int ans) {
         System.out.printf("결과 : %s", ans);
-    }
-
-    public static String readInput() {
-        System.out.println("덧셈할 문자열을 입력해 주세요.");
-        return Console.readLine();
-    }
-
-    public static void main(String[] args) {
-        String str = readInput();
-        List<Integer> v = parseNumbers(str);
-        int ans = getSum(v);
-
-        printAns(ans);
     }
 }
